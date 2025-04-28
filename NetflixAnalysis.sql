@@ -110,4 +110,30 @@ SELECT *
 FROM netflix
 WHERE director IS NULL;
 
---
+--Find How Many Movies Actor 'Salman Khan' Appeared in the Last 10 Years
+
+SELECT * 
+FROM netflix
+WHERE casts LIKE '%Salman Khan%'
+  AND release_year > EXTRACT(YEAR FROM CURRENT_DATE) - 10;
+
+--Find the Top 10 Actors Who Have Appeared in the Highest Number of Movies Produced in India
+
+select trim(unnest(string_to_array(casts,','))) as actors,count(*) as appearances from netflix where country ilike '%India%'
+group by 1
+order by 2 desc
+limit 10
+
+/*
+Categorize Content Based on the Presence of 'Kill' and 'Violence' Keywords
+
+*/
+
+select case
+	when description ilike '%Kill%' or description ilike '%Violence%' then 'BAD'
+	Else 'GOOD'
+	end as category,count(*)
+from netflix 
+group by 1
+
+
